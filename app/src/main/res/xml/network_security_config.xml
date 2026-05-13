@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Allow unencrypted WebSocket (ws://) to local LAN hosts.
+    This app only ever connects to a PC on the same local network,
+    so cleartext traffic to private IP ranges is intentional and safe.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
