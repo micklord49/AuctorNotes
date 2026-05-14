@@ -7,7 +7,8 @@ data class SyncMessage(
     val type: String,
     val projectName: String? = null,
     val notes: List<SyncNote>? = null,
-    val note: SyncNote? = null
+    val note: SyncNote? = null,
+    val noteIds: List<Long>? = null
 )
 
 @JsonClass(generateAdapter = true)
@@ -22,4 +23,5 @@ object MessageTypes {
     const val SET_PROJECT = "SET_PROJECT"
     const val SYNC_NOTES = "SYNC_NOTES"
     const val UPDATE_NOTE = "UPDATE_NOTE"
+    const val DELETE_NOTES = "DELETE_NOTES"
 }

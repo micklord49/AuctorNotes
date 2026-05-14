@@ -78,6 +78,15 @@ class SyncRepository(
                     startSyncingProject(project)
                 }
             }
+            MessageTypes.DELETE_NOTES -> {
+                val noteIds = message.noteIds ?: return
+                scope.launch(Dispatchers.IO) {
+                    noteIds.forEach { id ->
+                        val note = noteRepository.getNoteById(id)
+                        note?.let { noteRepository.deleteNote(it) }
+                    }
+                }
+            }
         }
     }
 

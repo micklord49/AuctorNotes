@@ -40,7 +40,7 @@ fun NoteDetailScreen(
     var isNewNote by remember { mutableStateOf(noteId == 0L) }
     
     val isListening by speechToTextManager.isListening.collectAsState()
-    val recognizedText by speechToTextManager.text.collectAsState()
+    val partialText by speechToTextManager.partialText.collectAsState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -63,9 +63,11 @@ fun NoteDetailScreen(
         }
     }
 
-    LaunchedEffect(recognizedText) {
-        if (recognizedText.isNotEmpty()) {
-            content += (if (content.isNotEmpty()) " " else "") + recognizedText
+    LaunchedEffect(Unit) {
+        speechToTextManager.finalResults.collect { result ->
+            if (result.isNotEmpty()) {
+                content += (if (content.isNotEmpty()) " " else "") + result
+            }
         }
     }
 
@@ -173,6 +175,14 @@ fun NoteDetailScreen(
                     unfocusedIndicatorColor = Color.Transparent,
                 )
             )
+
+            if (isListening && partialText.isNotEmpty()) {
+                Text(
+                    text = partialText,
+                    style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)),
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
             
             if (isListening) {
                 Surface(
